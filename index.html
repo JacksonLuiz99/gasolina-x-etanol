@@ -23,28 +23,11 @@
       },
     }
   </script>
-  <style>
-    .gradient-bg {
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-    }
-    .card-glow {
-      box-shadow: 0 0 40px rgba(139, 92, 246, 0.15), 0 25px 50px rgba(0,0,0,0.5);
-    }
-    .btn-calcular {
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
-      box-shadow: 0 4px 20px rgba(139, 92, 246, 0.45);
-    }
-    .btn-calcular:hover {
-      background: linear-gradient(135deg, #818cf8, #a78bfa);
-      box-shadow: 0 6px 25px rgba(139, 92, 246, 0.6);
-    }
-    .input-gasolina:focus { box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.25); }
-    .input-etanol:focus   { box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.25); }
-  </style>
 </head>
-<body class="min-h-screen flex items-center justify-center gradient-bg p-4">
+<body class="min-h-screen flex items-center justify-center bg-[linear-gradient(135deg,#0f0c29,#302b63,#24243e)] p-4">
 
-  <div class="w-full max-w-md bg-white/[0.07] backdrop-blur-2xl border border-white/[0.12] rounded-3xl p-8 card-glow">
+  <div class="w-full max-w-md bg-white/[0.07] backdrop-blur-2xl border border-white/[0.12] rounded-3xl p-8
+              shadow-[0_0_40px_rgba(139,92,246,0.15),0_25px_50px_rgba(0,0,0,0.5)]">
 
     <!-- Header -->
     <div class="text-center mb-8">
@@ -57,7 +40,7 @@
 
     <!-- Input Gasolina -->
     <div class="mb-5">
-      <label class="flex items-center gap-2 text-orange-400 text-xs font-bold uppercase tracking-wider mb-2">
+      <label for="gasolina" class="flex items-center gap-2 text-orange-400 text-xs font-bold uppercase tracking-wider mb-2">
         <span class="w-2 h-2 rounded-full bg-orange-400 inline-block animate-pulse-slow"></span>
         Preço da Gasolina
       </label>
@@ -68,9 +51,10 @@
           type="text"
           inputmode="numeric"
           placeholder="0,00"
-          class="input-gasolina w-full bg-slate-800/80 border-2 border-orange-500/30 rounded-xl pl-10 pr-4 py-3.5
+          class="w-full bg-slate-800/80 border-2 border-orange-500/30 rounded-xl pl-10 pr-4 py-3.5
                  text-white text-lg font-semibold placeholder-slate-600
                  focus:outline-none focus:border-orange-400/80 focus:bg-slate-800
+                 focus:shadow-[0_0_0_3px_rgba(251,146,60,0.25)]
                  transition-all duration-200"
         />
       </div>
@@ -79,7 +63,7 @@
 
     <!-- Input Etanol -->
     <div class="mb-7">
-      <label class="flex items-center gap-2 text-emerald-400 text-xs font-bold uppercase tracking-wider mb-2">
+      <label for="etanol" class="flex items-center gap-2 text-emerald-400 text-xs font-bold uppercase tracking-wider mb-2">
         <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse-slow"></span>
         Preço do Etanol
       </label>
@@ -90,9 +74,10 @@
           type="text"
           inputmode="numeric"
           placeholder="0,00"
-          class="input-etanol w-full bg-slate-800/80 border-2 border-emerald-500/30 rounded-xl pl-10 pr-4 py-3.5
+          class="w-full bg-slate-800/80 border-2 border-emerald-500/30 rounded-xl pl-10 pr-4 py-3.5
                  text-white text-lg font-semibold placeholder-slate-600
                  focus:outline-none focus:border-emerald-400/80 focus:bg-slate-800
+                 focus:shadow-[0_0_0_3px_rgba(52,211,153,0.25)]
                  transition-all duration-200"
         />
       </div>
@@ -103,7 +88,11 @@
     <div class="flex gap-3">
       <button
         onclick="calcular()"
-        class="btn-calcular flex-1 active:scale-95 text-white font-bold py-3.5 rounded-xl
+        class="flex-1 active:scale-95 text-white font-bold py-3.5 rounded-xl
+               bg-[linear-gradient(135deg,#6366f1,#8b5cf6)]
+               shadow-[0_4px_20px_rgba(139,92,246,0.45)]
+               hover:bg-[linear-gradient(135deg,#818cf8,#a78bfa)]
+               hover:shadow-[0_6px_25px_rgba(139,92,246,0.6)]
                transition-all duration-200 text-sm tracking-wide"
       >
         ⚡ Calcular
@@ -121,8 +110,9 @@
     <div id="resultado" class="hidden mt-7 animate-fade-in">
 
       <!-- Etanol -->
-      <div id="card-etanol" class="hidden rounded-2xl p-6 text-center border-2"
-           style="background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(5,150,105,0.08)); border-color: rgba(52,211,153,0.4);">
+      <div id="card-etanol" class="hidden rounded-2xl p-6 text-center border-2
+           bg-[linear-gradient(135deg,rgba(16,185,129,0.15),rgba(5,150,105,0.08))]
+           border-[rgba(52,211,153,0.4)]">
         <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-emerald-500/20 border border-emerald-400/30 mb-3">
           <span class="text-3xl">✅</span>
         </div>
@@ -135,8 +125,9 @@
       </div>
 
       <!-- Gasolina -->
-      <div id="card-gasolina" class="hidden rounded-2xl p-6 text-center border-2"
-           style="background: linear-gradient(135deg, rgba(249,115,22,0.15), rgba(234,88,12,0.08)); border-color: rgba(251,146,60,0.4);">
+      <div id="card-gasolina" class="hidden rounded-2xl p-6 text-center border-2
+           bg-[linear-gradient(135deg,rgba(249,115,22,0.15),rgba(234,88,12,0.08))]
+           border-[rgba(251,146,60,0.4)]">
         <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-orange-500/20 border border-orange-400/30 mb-3">
           <span class="text-3xl">🏆</span>
         </div>
@@ -149,8 +140,9 @@
       </div>
 
       <!-- Empate -->
-      <div id="card-empate" class="hidden rounded-2xl p-6 text-center border-2"
-           style="background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(109,40,217,0.08)); border-color: rgba(167,139,250,0.4);">
+      <div id="card-empate" class="hidden rounded-2xl p-6 text-center border-2
+           bg-[linear-gradient(135deg,rgba(139,92,246,0.15),rgba(109,40,217,0.08))]
+           border-[rgba(167,139,250,0.4)]">
         <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-violet-500/20 border border-violet-400/30 mb-3">
           <span class="text-3xl">⚖️</span>
         </div>
