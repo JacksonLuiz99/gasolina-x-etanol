@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gasolina x Etanol</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          animation: {
+            'fade-in': 'fadeIn 0.35s ease',
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4,0,0.6,1) infinite',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%':   { opacity: '0', transform: 'translateY(10px) scale(0.98)' },
+              '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+            },
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    .gradient-bg {
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    }
+    .card-glow {
+      box-shadow: 0 0 40px rgba(139, 92, 246, 0.15), 0 25px 50px rgba(0,0,0,0.5);
+    }
+    .btn-calcular {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      box-shadow: 0 4px 20px rgba(139, 92, 246, 0.45);
+    }
+    .btn-calcular:hover {
+      background: linear-gradient(135deg, #818cf8, #a78bfa);
+      box-shadow: 0 6px 25px rgba(139, 92, 246, 0.6);
+    }
+    .input-gasolina:focus { box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.25); }
+    .input-etanol:focus   { box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.25); }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center gradient-bg p-4">
+
+  <div class="w-full max-w-md bg-white/[0.07] backdrop-blur-2xl border border-white/[0.12] rounded-3xl p-8 card-glow">
+
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-700 shadow-lg shadow-purple-700/40 mb-4">
+        <span class="text-3xl">⛽</span>
+      </div>
+      <h1 class="text-white text-2xl font-extrabold tracking-tight">Gasolina <span class="text-violet-400">x</span> Etanol</h1>
+      <p class="text-slate-400 text-sm mt-1">Descubra qual combustível vale mais a pena</p>
+    </div>
+
+    <!-- Input Gasolina -->
+    <div class="mb-5">
+      <label class="flex items-center gap-2 text-orange-400 text-xs font-bold uppercase tracking-wider mb-2">
+        <span class="w-2 h-2 rounded-full bg-orange-400 inline-block animate-pulse-slow"></span>
+        Preço da Gasolina
+      </label>
+      <div class="relative">
+        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-orange-300/70 font-bold select-none text-sm">R$</span>
+        <input
+          id="gasolina"
+          type="text"
+          inputmode="numeric"
+          placeholder="0,00"
+          class="input-gasolina w-full bg-slate-800/80 border-2 border-orange-500/30 rounded-xl pl-10 pr-4 py-3.5
+                 text-white text-lg font-semibold placeholder-slate-600
+                 focus:outline-none focus:border-orange-400/80 focus:bg-slate-800
+                 transition-all duration-200"
+        />
+      </div>
+      <p id="erro-gasolina" class="text-red-400 text-xs mt-1.5 hidden">⚠ Insira um valor válido para a gasolina.</p>
+    </div>
+
+    <!-- Input Etanol -->
+    <div class="mb-7">
+      <label class="flex items-center gap-2 text-emerald-400 text-xs font-bold uppercase tracking-wider mb-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse-slow"></span>
+        Preço do Etanol
+      </label>
+      <div class="relative">
+        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-300/70 font-bold select-none text-sm">R$</span>
+        <input
+          id="etanol"
+          type="text"
+          inputmode="numeric"
+          placeholder="0,00"
+          class="input-etanol w-full bg-slate-800/80 border-2 border-emerald-500/30 rounded-xl pl-10 pr-4 py-3.5
+                 text-white text-lg font-semibold placeholder-slate-600
+                 focus:outline-none focus:border-emerald-400/80 focus:bg-slate-800
+                 transition-all duration-200"
+        />
+      </div>
+      <p id="erro-etanol" class="text-red-400 text-xs mt-1.5 hidden">⚠ Insira um valor válido para o etanol.</p>
+    </div>
+
+    <!-- Buttons -->
+    <div class="flex gap-3">
+      <button
+        onclick="calcular()"
+        class="btn-calcular flex-1 active:scale-95 text-white font-bold py-3.5 rounded-xl
+               transition-all duration-200 text-sm tracking-wide"
+      >
+        ⚡ Calcular
+      </button>
+      <button
+        onclick="limpar()"
+        class="flex-1 bg-slate-700/80 hover:bg-slate-600/80 active:scale-95 border-2 border-slate-600/60
+               text-slate-300 hover:text-white font-bold py-3.5 rounded-xl transition-all duration-200 text-sm"
+      >
+        🗑 Limpar
+      </button>
+    </div>
+
+    <!-- Resultado -->
+    <div id="resultado" class="hidden mt-7 animate-fade-in">
+
+      <!-- Etanol -->
+      <div id="card-etanol" class="hidden rounded-2xl p-6 text-center border-2"
+           style="background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(5,150,105,0.08)); border-color: rgba(52,211,153,0.4);">
+        <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-emerald-500/20 border border-emerald-400/30 mb-3">
+          <span class="text-3xl">✅</span>
+        </div>
+        <p class="text-emerald-300 text-xs font-bold uppercase tracking-widest mb-1">Melhor opção</p>
+        <p class="text-white text-3xl font-black mb-1">Etanol</p>
+        <p id="razao-etanol" class="text-slate-400 text-sm mb-4"></p>
+        <span id="economia-etanol"
+              class="inline-block bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-bold px-5 py-2 rounded-full">
+        </span>
+      </div>
+
+      <!-- Gasolina -->
+      <div id="card-gasolina" class="hidden rounded-2xl p-6 text-center border-2"
+           style="background: linear-gradient(135deg, rgba(249,115,22,0.15), rgba(234,88,12,0.08)); border-color: rgba(251,146,60,0.4);">
+        <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-orange-500/20 border border-orange-400/30 mb-3">
+          <span class="text-3xl">🏆</span>
+        </div>
+        <p class="text-orange-300 text-xs font-bold uppercase tracking-widest mb-1">Melhor opção</p>
+        <p class="text-white text-3xl font-black mb-1">Gasolina</p>
+        <p id="razao-gasolina" class="text-slate-400 text-sm mb-4"></p>
+        <span id="economia-gasolina"
+              class="inline-block bg-orange-500/20 border border-orange-400/30 text-orange-300 text-xs font-bold px-5 py-2 rounded-full">
+        </span>
+      </div>
+
+      <!-- Empate -->
+      <div id="card-empate" class="hidden rounded-2xl p-6 text-center border-2"
+           style="background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(109,40,217,0.08)); border-color: rgba(167,139,250,0.4);">
+        <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-violet-500/20 border border-violet-400/30 mb-3">
+          <span class="text-3xl">⚖️</span>
+        </div>
+        <p class="text-violet-300 text-xs font-bold uppercase tracking-widest mb-1">Equivalente</p>
+        <p class="text-white text-3xl font-black mb-1">Indiferente</p>
+        <p class="text-slate-400 text-sm mb-4">Razão etanol/gasolina: <strong class="text-white">70%</strong></p>
+        <span class="inline-block bg-violet-500/20 border border-violet-400/30 text-violet-300 text-xs font-bold px-5 py-2 rounded-full">
+          Ambos têm o mesmo custo-benefício
+        </span>
+      </div>
+    </div>
+
+    <!-- Regra -->
+    <div class="mt-6 border-t border-white/[0.08] pt-5 text-center text-slate-500 text-xs leading-relaxed">
+      Regra: Etanol vale a pena quando seu preço é
+      <span class="text-violet-400 font-semibold">menor ou igual a 70%</span> do preço da gasolina.
+    </div>
+
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
